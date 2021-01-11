@@ -4,7 +4,7 @@ const oracledb = require('oracledb');
 const fs = require('fs'); // 파일목록 탐색
 oracledb.autoCommit = true;
 
-const conn;
+let conn;
 
 fs.readFile('oracle.properties', 'utf8', (err, data) => {
 	let json = JSON.parse(data);
@@ -24,7 +24,7 @@ fs.readFile('oracle.properties', 'utf8', (err, data) => {
 });
 
 
-var insertSql = ( async (sql) => {
+let insertSql = ( async (sql) => {
 	if(conn != null) {
 		//쿼리문 실행 
 		let data = await conn.execute(sql).then(() => {
