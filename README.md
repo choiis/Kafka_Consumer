@@ -3,10 +3,13 @@
 Ubuntu 카프카 주키퍼 셋팅
 
 sudo apt update && sudo apt upgrade -y 
+
 sudo apt install openjdk-8-jdk
 
 sudo wget https://downloads.apache.org/kafka/2.4.1/kafka_2.13-2.4.1.tgz
+
 sudo tar xzf kafka_2.13-2.4.1.tgz
+
 sudo mv kafka_2.13-2.4.1 /opt/kafka
 
 주키퍼, 카프카 데몬 등록
@@ -45,5 +48,7 @@ WantedBy=multi-user.target
 
 데몬 reload
 sudo systemctl daemon-reload
+
 sudo systemctl start zookeeper
+
 sudo systemctl start kafka
