@@ -1,9 +1,10 @@
 const mssql = require('mssql');
 import * as fs from 'fs';
+import logger from './logger';
 
 fs.readFile('src/mssql.properties', 'utf8', function(err, data) {
-	const json = JSON.parse(data);
 
+	const json = JSON.parse(data);
 	const config = {
 		user : json.user,
 		password : json.password,
@@ -13,21 +14,21 @@ fs.readFile('src/mssql.properties', 'utf8', function(err, data) {
     };
     
     mssql.connect(config).then(() => {
-        console.log("SQL Server connection success");
+        logger.debug("SQL Server connection success");
     }).catch((err) => {
-		console.log(err);
+		logger.error(err);
     });
 });
 
 let insertSql = ( async (sql) => {
     const request = new mssql.Request();
-    console.log("insertSql " + sql);
+    logger.debug("insertSql " + sql);
     const data = await request.query(sql)
     .then(() => {
         return 1;
     })
     .catch((err) => {
-        console.log(err);
+        logger.error(err);
     });
     return data;
 });

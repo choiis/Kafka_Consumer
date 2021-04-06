@@ -1,8 +1,6 @@
 //src/index.ts
-import * as express from 'express'
-import * as fs from 'fs';
+import logger from './logger';
 const process = require('process');
-
 const dbconn = require('./mssql');
 const kafka = require('kafka-node');
 const Consumer = kafka.Consumer;
@@ -15,26 +13,26 @@ const topics = [{topic: 'errorLogs', partition: 0}];
 const consumer = new Consumer(client, topics, options);
 const offset = new Offset(client)
 
-consumer.on('message', function (message) {
-   console.log('consumer message');
-   dbconn.insertSql(message.value);
+consumer.on('message', (message) => {
+  logger.debug('consumer message');
+  dbconn.insertSql(message.value);
 });
 
 consumer.on('error', (err) => {
-  console.log('consumer error');
-	console.log('error:', err);
+  logger.debug('consumer message');
+  logger.error('error:', err);
 });
 
 
 consumer.on('offsetOutOfRange', (err) => {
-  console.log('consumer offsetOutOfRange');
-  console.log('offsetOutOfRange:',err);
+  logger.debug('consumer offsetOutOfRange');
+  logger.error('offsetOutOfRange:',err);
 });
 
-process.on('uncaughtException', function(err) {
-	console.error(err);
+process.on('uncaughtException', (err) => {
+  logger.error(err);
 });
 
 process.on('unhandledRejection' , (reason , p) => {
-	console.error(reason, 'Unhandled Rejection at Promise', p);
+  logger.error(reason, 'Unhandled Rejection at Promise', p);
 });
