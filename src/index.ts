@@ -4,10 +4,11 @@ const process = require('process');
 const dbconn = require('./mssql');
 const kafka = require('./kafka');
 
+const dao = new dbconn.Dao();
 
 kafka.consumer.on('message', (message) => {
   logger.debug('consumer message');
-  dbconn.insertSql(message.value);
+  dao.insertSql(message.value);
 });
 
 kafka.consumer.on('error', (err) => {
