@@ -4,7 +4,7 @@ import logger from './logger';
 
 fs.readFile('src/mssql.properties', 'utf8', function(err, data) {
 
-	const json = JSON.parse(data);
+	const json:any = JSON.parse(data);
 	const config = {
 		user : json.user,
 		password : json.password,
@@ -20,7 +20,7 @@ fs.readFile('src/mssql.properties', 'utf8', function(err, data) {
     });
 });
 
-let insertSql = ( async (sql) => {
+let insertSql = ( async (sql:string) => {
     const request = new mssql.Request();
     logger.debug("insertSql " + sql);
     const data = await request.query(sql)
